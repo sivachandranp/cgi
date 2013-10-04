@@ -1,0 +1,83 @@
+<html>
+<head>
+<script type="text/javascript" src="file:///D:/WORKSPACE/define4/trac/trac/htdocs/js/jquery.js"></script>
+<style>
+#tree{ display:block; clear:both; background:#f2f2f2; padding:20px;}
+#tree ul{ margin:0; padding:20px;}
+#tree ul li ul{padding-left:5px;}
+.folder {list-style: none;	list-style-image: url("file:///D:/WORKSPACE/define4/define/define/htdocs/folder.png");}
+.file {list-style: none;	list-style-image: url("file:///D:/WORKSPACE/define4/define/define/htdocs/add-file.png");}
+</style>
+</head>
+
+<body>
+<p>Sample tree</p>
+<div id="tree"></div>
+
+
+
+
+<script>
+$(document).ready( function () {
+var data = [
+	{ label : "1",
+	  children : []
+	},
+	{ label : "2",
+	  children : [{
+	  			label : "2.1",
+					children : [
+				 			{ label : "2.1.1",
+						  	  children : []
+							}]
+			 }]
+	},
+	{ label : "3",
+	  children : []
+	},
+	{ label : "4",
+	  children : []
+	}
+	]
+	
+// Grab the container DOM element
+var tree = $("#tree");
+
+function createNode(domElement,treeNode){    
+	// domElement = tree
+	// treeNode = data
+	var ul = $('<ul>'), li;
+		
+	// Make a <ul> to hold the current tree node's children (if any)
+	$(domElement).append(ul);			
+	    
+	$.each(treeNode, function(i){
+		console.log(treeNode[i].label);	
+		li	= $('<li>');
+		$(li).text(treeNode[i].label);
+
+		if(treeNode[i].children.length > 0){
+				console.log("dfs"+li.html());
+				//$(li).addClass('folder');   
+				$(li).attr({'id':treeNode[i].label,'class':'folder'})
+				// Recursively get this node's children
+				createNode(li,treeNode[i].children);
+		}
+		else{
+			$(li).attr({'id':treeNode[i].label,'class':'file'})
+			
+		}
+		
+		ul.append(li);
+	});  
+	}
+createNode(tree,data);
+
+$("#tree ul li").bind('click',function(){
+        //alert(this);
+        $(this).find('ul').toggle();
+});
+});
+</script>
+</body>
+</html>
